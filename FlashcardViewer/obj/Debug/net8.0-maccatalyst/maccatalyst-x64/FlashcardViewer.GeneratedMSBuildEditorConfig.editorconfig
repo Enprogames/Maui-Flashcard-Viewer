@@ -40,12 +40,6 @@ build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
 
-[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/DashboardPage.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.DashboardPage.xaml
-build_metadata.AdditionalFiles.TargetPath = Views\DashboardPage.xaml
-build_metadata.AdditionalFiles.RelativePath = Views\DashboardPage.xaml
-
 [C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardListPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardListPage.xaml
@@ -58,8 +52,8 @@ build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.Flas
 build_metadata.AdditionalFiles.TargetPath = Views\FlashcardSessionPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\FlashcardSessionPage.xaml
 
-[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardSetListView.xaml]
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardSetListPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardSetListView.xaml
-build_metadata.AdditionalFiles.TargetPath = Views\FlashcardSetListView.xaml
-build_metadata.AdditionalFiles.RelativePath = Views\FlashcardSetListView.xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardSetListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\FlashcardSetListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\FlashcardSetListPage.xaml

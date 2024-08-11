@@ -11,16 +11,13 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
-    <MauiXaml Update="Views\DashboardPage.xaml">
-      <SubType>Designer</SubType>
-    </MauiXaml>
     <MauiXaml Update="Views\FlashcardListPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="Views\FlashcardSessionPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\FlashcardSetListView.xaml">
+    <MauiXaml Update="Views\FlashcardSetListPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
   </ItemGroup>

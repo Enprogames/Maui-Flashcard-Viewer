@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlashcardViewer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+bfa208b53b2e72240015dd2209cad5cd3f8be043")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlashcardViewer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlashcardViewer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

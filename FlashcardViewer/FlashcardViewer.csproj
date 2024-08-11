@@ -82,28 +82,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\DashboardPage.xaml.cs">
-	    <DependentUpon>DashboardPage.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Views\FlashcardListPage.xaml.cs">
 	    <DependentUpon>FlashcardListPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\FlashcardSetListView.xaml.cs">
-	    <DependentUpon>FlashcardSetListView.xaml</DependentUpon>
+	  <Compile Update="Views\FlashcardSetListPage.xaml.cs">
+	    <DependentUpon>FlashcardSetListPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\DashboardPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\FlashcardListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\FlashcardSessionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\FlashcardSetListView.xaml">
+	  <MauiXaml Update="Views\FlashcardSetListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

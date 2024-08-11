@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Views/FlashcardSetListPage.xaml -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:FlashcardViewer.Views"
+             x:Class="FlashcardViewer.Views.FlashcardSetListPage"
+             xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
+             xmlns:models="clr-namespace:FlashcardViewer.Models"
+             x:DataType="viewmodels:FlashcardSetListViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="AddButtonStyle" TargetType="Button">
+                <Setter Property="Text" Value="Add" />
+                <Setter Property="BackgroundColor" Value="LightGreen" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Text="Flashcard Sets" FontSize="24" HorizontalOptions="Center" />
+        <StackLayout Grid.Row="1">
+            <Label x:Name="StorageModeLabel" Text="{Binding StorageModeText}"/>
+            <Button x:Name="AddSetButton" Style="{StaticResource AddButtonStyle}" Clicked="OnAddSetButtonClicked" />
+        </StackLayout>
+
+        <!-- Top bar for actions -->
+        <HorizontalStackLayout Grid.Row="2" Padding="10" HorizontalOptions="FillAndExpand">
+            <CheckBox IsChecked="{Binding SelectAllSets, Mode=TwoWay}" VerticalOptions="Center" />
+            <Label Text="Select All" VerticalOptions="Center" />
+
+            <Button Text="🗑️ Delete" 
+                    Command="{Binding DeleteSelectedSetsCommand}" 
+                    IsVisible="{Binding IsAnySetSelected}" 
+                    HorizontalOptions="EndAndExpand" />
+
+            <Button Text="▶ Start Session" 
+                    Command="{Binding StartSessionCommand}" 
+                    IsVisible="{Binding IsAnySetSelected}" 
+                    HorizontalOptions="EndAndExpand" />
+        </HorizontalStackLayout>
+
+        <!-- List of flashcard sets -->
+    <CollectionView
+            Grid.Row="3"
+            x:Name="FlashcardListCollectionView"
+            ItemsSource="{Binding FlashcardSets}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="viewmodels:SelectableFlashcardSet">
+                <Grid Padding="10" ColumnDefinitions="auto,*,*">
+                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalOptions="Center" />
+
+                    <Label Text="{Binding Title}" Grid.Column="1" VerticalOptions="Center" />
+                    <Label Text="{Binding Description}" Grid.Column="2" VerticalOptions="Center" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToFlashcardListCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
+                          CommandParameter="{Binding .}" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+    </Grid>
+</ContentPage>

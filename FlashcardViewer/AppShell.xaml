@@ -7,6 +7,6 @@
 
     <!-- Flyout Menu -->
     <FlyoutItem Title="Menu" FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate views:DashboardPage}" />
+        <ShellContent Title="Flashcard Sets" ContentTemplate="{DataTemplate views:FlashcardSetListPage}" />
     </FlyoutItem>
 </Shell>

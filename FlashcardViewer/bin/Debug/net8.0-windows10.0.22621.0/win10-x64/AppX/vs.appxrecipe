@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2024-08-11T22:35:30.009</Modified>
+      <Modified>2024-08-11T22:42:54.130</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2024-08-11T19:51:45.482</Modified>
+      <Modified>2024-08-11T22:42:53.953</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\FlashcardViewer.runtimeconfig.json">
       <PackagePath>FlashcardViewer.runtimeconfig.json</PackagePath>
@@ -44,11 +44,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\FlashcardViewer.dll">
       <PackagePath>FlashcardViewer.dll</PackagePath>
-      <Modified>2024-08-11T22:35:29.703</Modified>
+      <Modified>2024-08-11T22:42:52.838</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\obj\Debug\net8.0-windows10.0.22621.0\win10-x64\apphost.exe">
       <PackagePath>FlashcardViewer.exe</PackagePath>
-      <Modified>2024-08-11T22:35:29.708</Modified>
+      <Modified>2024-08-11T22:42:52.908</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\Resources\Raw\AboutAssets.txt">
       <PackagePath>AboutAssets.txt</PackagePath>
@@ -288,7 +288,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\FlashcardViewer.deps.json">
       <PackagePath>FlashcardViewer.deps.json</PackagePath>
-      <Modified>2024-08-11T19:51:45.156</Modified>
+      <Modified>2024-08-11T22:42:53.751</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.22621.31\lib\net6.0\Microsoft.Windows.SDK.NET.dll">
       <PackagePath>Microsoft.Windows.SDK.NET.dll</PackagePath>

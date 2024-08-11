@@ -32,7 +32,7 @@ namespace FlashcardViewer
             builder.Services.AddSingleton<IDataStoreService, DataStoreService>();
 
             // Register pages
-            builder.Services.AddTransient<DashboardPage>();
+            builder.Services.AddTransient<FlashcardSetListPage>();
             builder.Services.AddTransient<FlashcardSetListViewModel>();
 
             builder.Services.AddTransient<FlashcardListPage>();

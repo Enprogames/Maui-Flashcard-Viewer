@@ -1,6 +1,7 @@
-using Microsoft.Maui.Controls;
+using System;
 using System.Threading.Tasks;
-
+using System.Collections.Generic;
+using Microsoft.Maui.Controls;
 using FlashcardViewer.Models;
 using FlashcardViewer.Services;
 using FlashcardViewer.Views;
@@ -8,19 +9,15 @@ using FlashcardViewer.ViewModels;
 
 namespace FlashcardViewer.Views
 {
-    public partial class DashboardPage : ContentPage
+    public partial class FlashcardSetListPage : ContentPage
     {
-        private readonly FlashcardSetListViewModel _viewModel;
+        FlashcardSetListViewModel _viewModel;
 
-        public DashboardPage(FlashcardSetListViewModel viewModel)
+        public FlashcardSetListPage(FlashcardSetListViewModel viewModel)
         {
             InitializeComponent();
-
             _viewModel = viewModel;
-            BindingContext = _viewModel;
-
-            var flashcardSetListView = new FlashcardSetListView(_viewModel);
-            SetListViewContainer.Content = flashcardSetListView;
+            BindingContext = viewModel;
         }
 
         private async void OnAddSetButtonClicked(object sender, EventArgs e)
@@ -30,11 +27,6 @@ namespace FlashcardViewer.Views
             {
                 await _viewModel.AddFlashcardSetCommand.ExecuteAsync(result);
             }
-        }
-
-        private void OnStartSessionClicked(object sender, EventArgs e)
-        {
-            // TODO: Start session
         }
     }
 }
