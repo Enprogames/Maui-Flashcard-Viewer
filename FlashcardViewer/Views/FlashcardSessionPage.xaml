@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlashcardViewer.Views.FlashcardSessionPage"
+             xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
+             xmlns:models="clr-namespace:FlashcardViewer.Models"
+             x:DataType="viewmodels:FlashcardSessionViewModel"
+             Title="Flashcard Session">
+    <VerticalStackLayout>
+
+        <Label Text="{Binding Title}" FontSize="24" HorizontalOptions="Center" />
+        <Label Text="{Binding CardCountDisplay}" FontSize="18" HorizontalOptions="Center" />
+
+        <!-- Main card area for flipping -->
+        <Frame HeightRequest="300" WidthRequest="300" BorderColor="Gray" CornerRadius="10" Padding="20" 
+               BackgroundColor="LightGray" VerticalOptions="CenterAndExpand">
+            <Label Text="{Binding CurrentCardText}" HorizontalOptions="Center" VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding FlipCardCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Frame>
+
+        <!-- Navigation buttons -->
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+            <Button Text="&lt;" Command="{Binding PreviousCardCommand}" IsVisible="{Binding IsPreviousButtonVisible}" />
+            <Button Text="&gt;" Command="{Binding NextCardCommand}" IsVisible="{Binding IsNextButtonVisible}" />
+        </StackLayout>
+
+        <!-- Go Back Button -->
+        <Button Text="End Session" Command="{Binding GoBackCommand}" HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

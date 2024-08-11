@@ -1,0 +1,65 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0-ios
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = FlashcardViewer
+build_property.ProjectDir = C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/App.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.App.xaml
+build_metadata.AdditionalFiles.TargetPath = App.xaml
+build_metadata.AdditionalFiles.RelativePath = App.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/AppShell.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.AppShell.xaml
+build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
+build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Styles/Colors.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Styles.Colors.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Styles/Styles.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Styles.Styles.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/DashboardPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.DashboardPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\DashboardPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\DashboardPage.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardListPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\FlashcardListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\FlashcardListPage.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardSessionPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardSessionPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\FlashcardSessionPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\FlashcardSessionPage.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardSetListView.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardSetListView.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\FlashcardSetListView.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\FlashcardSetListView.xaml
