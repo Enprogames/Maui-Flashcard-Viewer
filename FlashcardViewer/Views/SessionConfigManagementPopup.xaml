@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlashcardViewer.Views.SessionConfigManagementPopup"
+             xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
+             x:DataType="viewmodels:SessionConfigManagementViewModel">
+    <Border
+        Background="Black"
+        Padding="10">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label 
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Configure Session"
+                FontSize="24"
+                HorizontalOptions="Start" />
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                Clicked="OnCloseButtonClicked"
+                Text="X"
+                HorizontalOptions="End"/>
+
+            <Label Grid.Row="1" Grid.Column="0"  Text="Autoplay:" VerticalOptions="Center" />
+            <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding SessionConfig.IsAutoplayEnabled}" />
+
+            <Label Grid.Row="2" Grid.Column="0" Text="Read Aloud:" VerticalOptions="Center" />
+            <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding SessionConfig.IsReadAloudEnabled}" />
+
+            <Label Grid.Row="3" Grid.Column="0" Text="Shuffle:" VerticalOptions="Center" />
+            <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding SessionConfig.IsShuffleEnabled}" />
+
+            <Label Grid.Row="4" Grid.Column="0" Text="Display Term First:" VerticalOptions="Center" />
+            <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding SessionConfig.DisplayTermFirst}" />
+
+            <Button Grid.Row="5"
+                    Grid.ColumnSpan="2"
+                    Text="Start Session"
+                    Clicked="OnStartSessionClicked"
+                    Command="{Binding ConfirmButtonCommandWrapper}" />
+        </Grid>
+    </Border>
+</ContentView>

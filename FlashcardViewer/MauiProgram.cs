@@ -40,6 +40,7 @@ namespace FlashcardViewer
             
             builder.Services.AddTransient<FlashcardSessionPage>();
             builder.Services.AddTransient<FlashcardSessionViewModel>();
+            builder.Services.AddTransient<SessionConfigViewModel>();
 
             return builder.Build();
         }

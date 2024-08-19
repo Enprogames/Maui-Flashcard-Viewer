@@ -28,17 +28,29 @@ build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.AppShell.x
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
-[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Styles/Colors.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Styles.Colors.xaml
-build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
-build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
-
 [C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Styles/Styles.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Styles.Styles.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Themes/Colors.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Themes.Colors.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Themes\Colors.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Themes\Colors.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Themes/DarkTheme.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Themes.DarkTheme.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Themes\DarkTheme.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Themes\DarkTheme.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Resources/Themes/LightTheme.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Resources.Themes.LightTheme.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Themes\LightTheme.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Themes\LightTheme.xaml
 
 [C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/FlashcardListPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
@@ -57,3 +69,9 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.FlashcardSetListPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\FlashcardSetListPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\FlashcardSetListPage.xaml
+
+[C:/Users/e_pos/source/repos/FlashcardViewer/FlashcardViewer/Views/SessionConfigManagementPopup.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FlashcardViewer.Views.SessionConfigManagementPopup.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\SessionConfigManagementPopup.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\SessionConfigManagementPopup.xaml

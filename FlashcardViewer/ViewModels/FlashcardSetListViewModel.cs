@@ -47,9 +47,7 @@ namespace FlashcardViewer.ViewModels
         }
 
         public IAsyncRelayCommand<string> AddFlashcardSetCommand { get; private set; }
-        public IAsyncRelayCommand<FlashcardSet> NavigateToFlashcardListCommand { get; private set; }
         public IAsyncRelayCommand DeleteSelectedSetsCommand { get; private set; }
-        public IRelayCommand StartSessionCommand { get; private set; }
 
         public FlashcardSetListViewModel(IDataStoreService dataStoreService)
         {
@@ -62,14 +60,9 @@ namespace FlashcardViewer.ViewModels
                 async (p) => AddFlashcardSetAsync(p),
                 canExecute => true
             );
-            NavigateToFlashcardListCommand = new AsyncRelayCommand<FlashcardSet>(
-                async (p) => await NavigateToFlashcardList(p),
-                canExecute => true
-            );
             DeleteSelectedSetsCommand = new AsyncRelayCommand(
                 async () => await DeleteSelectedSets()
             );
-            StartSessionCommand = new RelayCommand(StartSession);
 
             // Initialize Flashcard Sets
             Task.Run(InitializeAsync);
@@ -106,14 +99,6 @@ namespace FlashcardViewer.ViewModels
                 var selectableSet = new SelectableFlashcardSet(newSet);
                 selectableSet.PropertyChanged += SelectableSet_PropertyChanged;
                 FlashcardSets.Add(selectableSet);
-            }
-        }
-
-        private async Task NavigateToFlashcardList(FlashcardSet selectedSet)
-        {
-            if (selectedSet != null)
-            {
-                await Shell.Current.GoToAsync($"{nameof(FlashcardListPage)}?setId={selectedSet.Id}");
             }
         }
 
@@ -161,10 +146,13 @@ namespace FlashcardViewer.ViewModels
             }
         }
 
-        private void StartSession()
+        [RelayCommand]
+        async Task NavigateToFlashcardList(FlashcardSet set)
         {
-            // Logic to start a session with selected sets
-            // This is a placeholder for future implementation
+            if (set != null)
+            {
+                await Shell.Current.GoToAsync($"{nameof(FlashcardListPage)}?setId={set.Id}");
+            }
         }
     }
 

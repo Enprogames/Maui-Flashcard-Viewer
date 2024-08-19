@@ -4,6 +4,7 @@
              x:Class="FlashcardViewer.Views.FlashcardSessionPage"
              xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
              xmlns:models="clr-namespace:FlashcardViewer.Models"
+             xmlns:views="clr-namespace:FlashcardViewer.Views"
              x:DataType="viewmodels:FlashcardSessionViewModel"
              Title="Flashcard Session">
     <VerticalStackLayout>
@@ -13,21 +14,36 @@
 
         <!-- Main card area for flipping -->
         <Frame HeightRequest="300" WidthRequest="300" BorderColor="Gray" CornerRadius="10" Padding="20" 
-               BackgroundColor="LightGray" VerticalOptions="CenterAndExpand">
-            <Label Text="{Binding CurrentCardText}" HorizontalOptions="Center" VerticalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding FlipCardCommand}" />
-                </Label.GestureRecognizers>
+               BackgroundColor="Grey" VerticalOptions="CenterAndExpand" >
+            <Label 
+                Text="{Binding CurrentCardText}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="White">
             </Label>
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding FlipCardCommand}" />
+            </Frame.GestureRecognizers>
         </Frame>
 
         <!-- Navigation buttons -->
         <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
             <Button Text="&lt;" Command="{Binding PreviousCardCommand}" IsVisible="{Binding IsPreviousButtonVisible}" />
-            <Button Text="&gt;" Command="{Binding NextCardCommand}" IsVisible="{Binding IsNextButtonVisible}" />
+            <Button Text="{Binding NextButtonIcon}" Command="{Binding NextCardCommand}" />
         </StackLayout>
 
         <!-- Go Back Button -->
         <Button Text="End Session" Command="{Binding GoBackCommand}" HorizontalOptions="Center" />
+
+        <!-- Configure Session Button -->
+        <Button Text="Configure Session" Clicked="OnConfigureSessionClicked" HorizontalOptions="Center" />
+
+        <!-- Popup for session configuration -->
+        <views:SessionConfigManagementPopup
+            x:Name="SessionConfigPopup"
+            AbsoluteLayout.LayoutBounds="0.5, 0.5, 300, 200"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
     </VerticalStackLayout>
 </ContentPage>

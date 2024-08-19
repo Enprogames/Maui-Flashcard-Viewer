@@ -23,54 +23,66 @@
     </ContentPage.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Text="Flashcard Sets" FontSize="24" HorizontalOptions="Center" />
-        <StackLayout Grid.Row="1">
-            <Label x:Name="StorageModeLabel" Text="{Binding StorageModeText}"/>
-            <Button x:Name="AddSetButton" Style="{StaticResource AddButtonStyle}" Clicked="OnAddSetButtonClicked" />
-        </StackLayout>
+            <Label Grid.Row="0" Text="Flashcard Sets" FontSize="24" HorizontalOptions="Center" />
+            <StackLayout Grid.Row="1">
+                <Label x:Name="StorageModeLabel" Text="{Binding StorageModeText}"/>
+                <Button x:Name="AddSetButton"
+                        Style="{StaticResource AddButtonStyle}"
+                        Clicked="OnAddSetButtonClicked" />
+            </StackLayout>
 
-        <!-- Top bar for actions -->
-        <HorizontalStackLayout Grid.Row="2" Padding="10" HorizontalOptions="FillAndExpand">
-            <CheckBox IsChecked="{Binding SelectAllSets, Mode=TwoWay}" VerticalOptions="Center" />
-            <Label Text="Select All" VerticalOptions="Center" />
+            <!-- Top bar for actions -->
+            <HorizontalStackLayout Grid.Row="2" Padding="10" HorizontalOptions="FillAndExpand">
+                <CheckBox IsChecked="{Binding SelectAllSets, Mode=TwoWay}" VerticalOptions="Center" />
+                <Label Text="Select All" VerticalOptions="Center" />
 
-            <Button Text="🗑️ Delete" 
-                    Command="{Binding DeleteSelectedSetsCommand}" 
-                    IsVisible="{Binding IsAnySetSelected}" 
-                    HorizontalOptions="EndAndExpand" />
+                <Button Text="🗑️ Delete" 
+                Command="{Binding DeleteSelectedSetsCommand}" 
+                IsVisible="{Binding IsAnySetSelected}" 
+                HorizontalOptions="EndAndExpand" />
 
-            <Button Text="▶ Start Session" 
-                    Command="{Binding StartSessionCommand}" 
-                    IsVisible="{Binding IsAnySetSelected}" 
-                    HorizontalOptions="EndAndExpand" />
-        </HorizontalStackLayout>
+                <Button Text="▶ Start Session" 
+                IsVisible="{Binding IsAnySetSelected}" 
+                Clicked="OnStartSessionButtonClicked" 
+                HorizontalOptions="EndAndExpand" />
+            </HorizontalStackLayout>
 
-        <!-- List of flashcard sets -->
-    <CollectionView
-            Grid.Row="3"
-            x:Name="FlashcardListCollectionView"
-            ItemsSource="{Binding FlashcardSets}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="viewmodels:SelectableFlashcardSet">
-                <Grid Padding="10" ColumnDefinitions="auto,*,*">
-                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalOptions="Center" />
+            <!-- List of flashcard sets -->
+            <CollectionView
+        Grid.Row="3"
+        x:Name="FlashcardListCollectionView"
+        ItemsSource="{Binding FlashcardSets}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:SelectableFlashcardSet">
+                        <Grid Padding="10" ColumnDefinitions="auto,*,*">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalOptions="Center" />
 
-                    <Label Text="{Binding Title}" Grid.Column="1" VerticalOptions="Center" />
-                    <Label Text="{Binding Description}" Grid.Column="2" VerticalOptions="Center" />
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToFlashcardListCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
-                          CommandParameter="{Binding .}" />
-                    </Grid.GestureRecognizers>
-                </Grid>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                            <Label Text="{Binding Title}" Grid.Column="1" VerticalOptions="Center" />
+                            <Label Text="{Binding Description}" Grid.Column="2" VerticalOptions="Center" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.NavigateToFlashcardListCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                      CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <views:SessionConfigManagementPopup
+            x:Name="SessionConfigPopup"
+            AbsoluteLayout.LayoutBounds="0.5, 0.5, 300, 200"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
     </Grid>
+    
 </ContentPage>

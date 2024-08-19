@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlashcardViewer.Resources.Themes.LightTheme">
+
+    <Color x:Key="PrimaryColor">#FFFFFF</Color>
+    <Color x:Key="SecondaryColor">#F0F0F0</Color>
+    <Color x:Key="AccentColor">#6200EE</Color>
+    <Color x:Key="BackgroundColor">#FFFFFF</Color>
+    <Color x:Key="TextColor">#000000</Color>
+
+</ResourceDictionary>

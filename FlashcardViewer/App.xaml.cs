@@ -13,6 +13,9 @@ namespace FlashcardViewer
             ServiceProvider = serviceProvider;
 
             MainPage = new AppShell();
+
+            // Load the theme during app initialization
+            ThemeManager.LoadSavedTheme();
         }
     }
 }

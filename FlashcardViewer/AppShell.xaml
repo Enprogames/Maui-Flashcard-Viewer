@@ -9,4 +9,7 @@
     <FlyoutItem Title="Menu" FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Flashcard Sets" ContentTemplate="{DataTemplate views:FlashcardSetListPage}" />
     </FlyoutItem>
+
+    <MenuItem Text="Light Theme" Command="{Binding SwitchThemeCommand}" CommandParameter="Light" />
+    <MenuItem Text="Dark Theme" Command="{Binding SwitchThemeCommand}" CommandParameter="Dark" />
 </Shell>

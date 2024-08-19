@@ -30,7 +30,7 @@ namespace FlashcardViewer.ViewModels
         private IFlashcardDataStore _dataStore;
 
         [ObservableProperty]
-        private string title;
+        private FlashcardSet flashcardSet;
 
         [ObservableProperty]
         private ObservableCollection<Flashcard> flashcards = new ObservableCollection<Flashcard>();
@@ -60,8 +60,7 @@ namespace FlashcardViewer.ViewModels
         {
             if (_dataStore != null)
             {
-                var flashcardSet = await _dataStore.GetFlashcardSetAsync(setId);
-                Title = flashcardSet.Title;
+                FlashcardSet = await _dataStore.GetFlashcardSetAsync(setId);
                 var newFlashcards = (await _dataStore.GetFlashcardsForSetAsync(setId)).ToList();
                 Flashcards.Clear();
                 foreach (Flashcard flashcard in newFlashcards)
@@ -107,12 +106,6 @@ namespace FlashcardViewer.ViewModels
                     await _dataStore.UpdateFlashcardAsync(flashcard);
                 }
             }
-        }
-
-        [RelayCommand]
-        async Task StartSession()
-        {
-            await Shell.Current.GoToAsync($"{nameof(FlashcardSessionPage)}?setId={SetId}");
         }
 
         [RelayCommand]

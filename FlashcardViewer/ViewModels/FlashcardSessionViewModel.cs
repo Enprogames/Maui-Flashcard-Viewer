@@ -7,32 +7,19 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
+using FlashcardViewer.Views;
 using FlashcardViewer.Models;
 using CommunityToolkit.Mvvm.Input;
 
 namespace FlashcardViewer.ViewModels
 {
-    [QueryProperty(nameof(SetId), "setId")]
-    [QueryProperty(nameof(IsAutoplayEnabled), "isAutoplayEnabled")]
-    [QueryProperty(nameof(DisplayTermFirst), "displayTermFirst")]
-    [QueryProperty(nameof(IsShuffleEnabled), "isShuffleEnabled")]
+    [QueryProperty(nameof(SessionConfig), "SessionConfig")]
     public partial class FlashcardSessionViewModel : ObservableObject
     {
-        private int _setId;
-        public int SetId
-        {
-            get => _setId;
-            set
-            {
-                _setId = value;
-                LoadFlashcards(value); // Method to load flashcards based on SetId
-            }
-        }
-
-        private IFlashcardDataStore _dataStore;
+        private IFlashcardDataStore dataStore;
 
         [ObservableProperty]
-        private bool displayTermFirst;
+        private SessionConfigViewModel sessionConfig;
 
         [ObservableProperty]
         private string title;
@@ -53,40 +40,55 @@ namespace FlashcardViewer.ViewModels
         private string cardCountDisplay;
 
         [ObservableProperty]
-        private bool isNextButtonVisible;
+        private string nextButtonIcon;
 
         [ObservableProperty]
         private bool isPreviousButtonVisible;
 
-        [ObservableProperty]
-        private bool isAutoplayEnabled;
-
-        [ObservableProperty]
-        private bool isShuffleEnabled;
-
-        public FlashcardSessionViewModel(IFlashcardDataStore dataStore)
+        public FlashcardSessionViewModel(IFlashcardDataStore _dataStore)
         {
-            _dataStore = dataStore;
+            dataStore = _dataStore;
             CurrentIndex = 0;
-            UpdateNavigationVisibility();
-        }
 
-        private async void LoadFlashcards(int setId)
+            UpdateNavigationButtonVisibility();
+        }
+        
+        public async Task LoadSetsAsync()
         {
-            if (_dataStore != null)
+            if (SessionConfig == null)
             {
-                var flashcardSet = await _dataStore.GetFlashcardSetAsync(setId);
-                Title = flashcardSet.Title;
-                var loadedFlashcards = (await _dataStore.GetFlashcardsForSetAsync(setId)).ToList();
+                throw new Exception("SessionConfig is null. It must be passed in as a QueryProperty when navigating to this page.");
+            }
+
+            if (dataStore != null)
+            {
+                var allFlashcards = new List<Flashcard>();
+
+                var setIds = SessionConfig.SetIds;
+
+                if (setIds.Count() == 1)
+                {
+                    var flashcardSet = await dataStore.GetFlashcardSetAsync(setIds[0]);
+                    Title = flashcardSet.Title;
+                }
+                else
+                {
+                    Title = "Multiple Sets";
+                }
+                foreach (var setId in setIds)
+                {
+                    var loadedFlashcards = (await dataStore.GetFlashcardsForSetAsync(setId)).ToList();
+                    allFlashcards.AddRange(loadedFlashcards);
+                }
 
                 // Shuffle the cards if shuffle is enabled
-                if (IsShuffleEnabled)
+                if (SessionConfig.IsShuffleEnabled)
                 {
-                    loadedFlashcards = ShuffleFlashcards(loadedFlashcards);
+                    allFlashcards = ShuffleFlashcards(allFlashcards);
                 }
 
                 Flashcards.Clear();
-                foreach (Flashcard flashcard in loadedFlashcards)
+                foreach (Flashcard flashcard in allFlashcards)
                 {
                     Flashcards.Add(flashcard);
                 }
@@ -106,11 +108,17 @@ namespace FlashcardViewer.ViewModels
             if (Flashcards.Count > 0 && index >= 0 && index < Flashcards.Count)
             {
                 CurrentFlashcard = Flashcards[index];
-                CurrentCardText = displayTermFirst ? CurrentFlashcard.Question : CurrentFlashcard.Answer;
+                CurrentCardText = SessionConfig.DisplayTermFirst ? CurrentFlashcard.Question : CurrentFlashcard.Answer;
                 CurrentIndex = index;
                 CardCountDisplay = $"{CurrentIndex + 1} / {Flashcards.Count}";
-                UpdateNavigationVisibility();
+                UpdateNavigationButtonVisibility();
             }
+        }
+
+        [RelayCommand]
+        async Task StartSession()
+        {
+            await Shell.Current.GoToAsync(nameof(FlashcardSessionPage));
         }
 
         [RelayCommand]
@@ -150,10 +158,10 @@ namespace FlashcardViewer.ViewModels
             await Shell.Current.GoToAsync("..");
         }
 
-        private void UpdateNavigationVisibility()
+        private void UpdateNavigationButtonVisibility()
         {
             IsPreviousButtonVisible = CurrentIndex > 0;
-            IsNextButtonVisible = CurrentIndex < Flashcards.Count - 1;
+            NextButtonIcon = CurrentIndex < Flashcards.Count - 1 ? "&gt;" : "✓";
         }
     }
 }
