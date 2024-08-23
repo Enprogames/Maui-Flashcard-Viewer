@@ -1,1 +1,86 @@
-.vs
+# .NET MAUI
+bin/
+obj/
+App_Resources/
+
+# User-specific files
+.vscode/
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build Directories (Uncomment if you have these)
+#project.lock.json
+#project.fragment.lock.json
+
+# Visual Studio
+.vscode/
+.vs/
+.vscode/*
+.vscode/*
+
+# Rider
+.idea/
+.idea/*
+
+# Auto-generated files
+*.generated.cs
+*.pdb
+*.mdb
+*.cache
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+#NuGet Dependency Cache
+**/packages/*.*
+# NuGet v3's project.json files produces more ignorable files
+*.nuget.props
+*.nuget.targets
+
+# Xamarin/MAUI Generated Output
+# Xamarin.Android
+*.apk
+*.ap_
+
+# Xamarin.iOS
+#build/ #uncomment if using centralized build output
+*.ipa
+*.dSYM.zip
+*.dSYM/
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Localization
+*.resx
+
+# Node modules if you're using JS/TS
+node_modules/
+
+# Environment variables
+.env
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
