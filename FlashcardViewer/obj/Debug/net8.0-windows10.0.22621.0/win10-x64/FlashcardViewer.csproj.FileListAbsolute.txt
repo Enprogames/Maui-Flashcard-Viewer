@@ -185,3 +185,4 @@ C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\obj\Debug\net8.0-win
 C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\obj\Debug\net8.0-windows10.0.22621.0\win10-x64\MultipleQualifiersPerDimensionFound.txt
 C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\obj\Debug\net8.0-windows10.0.22621.0\win10-x64\ProjectArchitectures.txt
 C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\CommunityToolkit.Mvvm.dll
+C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\obj\Debug\net8.0-windows10.0.22621.0\win10-x64\FlashcardViewer.sourcelink.json

@@ -12,6 +12,7 @@ namespace FlashcardViewer
         public AppShell()
         {
             InitializeComponent();
+            BindingContext = this;
 
             Routing.RegisterRoute(nameof(FlashcardListPage), typeof(FlashcardListPage));
             Routing.RegisterRoute(nameof(FlashcardSessionPage), typeof(FlashcardSessionPage));

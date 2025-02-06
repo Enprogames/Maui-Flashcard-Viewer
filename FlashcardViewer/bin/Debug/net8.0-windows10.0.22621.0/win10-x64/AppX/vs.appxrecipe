@@ -30,7 +30,7 @@
     <AppXManifest Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2024-08-19T03:06:37.122</Modified>
+      <Modified>2024-08-23T04:14:00.829</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -44,11 +44,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\bin\Debug\net8.0-windows10.0.22621.0\win10-x64\FlashcardViewer.dll">
       <PackagePath>FlashcardViewer.dll</PackagePath>
-      <Modified>2024-08-19T03:06:36.701</Modified>
+      <Modified>2024-08-23T04:14:00.368</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\obj\Debug\net8.0-windows10.0.22621.0\win10-x64\apphost.exe">
       <PackagePath>FlashcardViewer.exe</PackagePath>
-      <Modified>2024-08-19T03:06:36.709</Modified>
+      <Modified>2024-08-23T04:14:00.376</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\Resources\Raw\AboutAssets.txt">
       <PackagePath>AboutAssets.txt</PackagePath>

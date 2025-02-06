@@ -11,14 +11,10 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.PackageName", "com.companyname.FlashcardViewer")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.PublisherName", "User Name")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.Name", "FlashcardViewer")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.Version", "1.0.0.1")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlashcardViewer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+abb7d1a2a67cb5ce3560c0b80def52e59646449e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0025b3cb0afa7fca125f04d7646c413abbe6e5d7")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlashcardViewer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlashcardViewer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

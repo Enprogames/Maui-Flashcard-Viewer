@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FlashcardViewer.Resources.Themes.DarkTheme">
+                    x:Class="FlashcardViewer.Resources.Themes.DarkTheme">
 
-    <Color x:Key="PrimaryColor">#71627a</Color>
-    <!-- RGB(113,98,122) -->
-    <Color x:Key="SecondaryColor">#5b4965</Color>
-    <!-- RGB(91,73,101) -->
-    <Color x:Key="AccentColor">#3d354b</Color>
-    <!-- RGB(61,53,75) -->
+    <Color x:Key="Primary">#71627a</Color>
+    <Color x:Key="Secondary">#5b4965</Color>
+    <Color x:Key="Tertiary">#3d354b</Color>
     <Color x:Key="BackgroundColor">#2e293a</Color>
-    <!-- RGB(46,41,58) -->
     <Color x:Key="TextColor">#FFFFFF</Color>
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{DynamicResource Primary}"/>
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{DynamicResource Secondary}"/>
+    <SolidColorBrush x:Key="TertiaryBrush" Color="{DynamicResource Tertiary}"/>
+    
 </ResourceDictionary>
