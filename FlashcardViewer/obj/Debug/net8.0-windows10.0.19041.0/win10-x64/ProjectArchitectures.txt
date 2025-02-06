@@ -1,1 +1,0 @@
-C:\Users\e_pos\source\repos\FlashcardViewer\FlashcardViewer\FlashcardViewer.csproj;x64
