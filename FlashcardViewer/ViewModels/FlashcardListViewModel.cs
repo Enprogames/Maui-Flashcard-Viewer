@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
-using FlashcardViewer.Views;
-using FlashcardViewer.Services;
 using FlashcardViewer.Models;
+using FlashcardViewer.Services;
+using System.Collections.ObjectModel;
 
 namespace FlashcardViewer.ViewModels
 {
@@ -33,7 +26,7 @@ namespace FlashcardViewer.ViewModels
         private FlashcardSet flashcardSet;
 
         [ObservableProperty]
-        private ObservableCollection<Flashcard> flashcards = new ObservableCollection<Flashcard>();
+        private ObservableCollection<Flashcard> flashcards = [];
 
         [ObservableProperty]
         private string newQuestion;
