@@ -6,6 +6,7 @@
   <Project Path="src/FlashcardViewer.Application/FlashcardViewer.Application.csproj" />
   <Project Path="src/FlashcardViewer.Infrastructure.Sqlite/FlashcardViewer.Infrastructure.Sqlite.csproj" />
   <Project Path="src/FlashcardViewer.Infrastructure.Web/FlashcardViewer.Infrastructure.Web.csproj" />
+  <Project Path="src/FlashcardViewer.SharedUI/FlashcardViewer.SharedUI.csproj" />
   <Project Path="tests/FlashcardViewer.ArchitectureTests/FlashcardViewer.ArchitectureTests.csproj" />
   <Project Path="tests/FlashcardViewer.UnitTests/FlashcardViewer.UnitTests.csproj" />
 </Solution>

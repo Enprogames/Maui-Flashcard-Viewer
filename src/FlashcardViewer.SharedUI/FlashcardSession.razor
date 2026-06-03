@@ -1,0 +1,253 @@
+@page "/session"
+@inject IFlashcardRepository Repository
+@inject NavigationManager Navigation
+@inject Services.SessionStateService SessionState
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<div class="session-page-container">
+    @if (SessionConfig == null)
+    {
+        <div class="loader">Redirecting...</div>
+    }
+    else
+    {
+        <div class="session-header glass-panel">
+            <button class="btn btn-secondary" @onclick="EndSession">🚪 End Session</button>
+            <div class="session-title-group">
+                <h2>@SessionConfig.Title</h2>
+                <span class="card-counter">@CardCountDisplay</span>
+            </div>
+            <button class="btn btn-secondary" @onclick="OpenConfigPopup">⚙️ Settings</button>
+        </div>
+
+        @if (!Cards.Any())
+        {
+            <div class="empty-state glass-panel">
+                <p>No cards available for this session. Please add some cards first.</p>
+            </div>
+        }
+        else
+        {
+            <div class="card-display-area">
+                <div class="flip-container" @onclick="FlipCard">
+                    <div class="flipper @(IsFlipped ? "flipped" : "")">
+                        <div class="front">
+                            <span class="card-label">Front</span>
+                            <p class="card-text">@FrontText</p>
+                            @if (!string.IsNullOrWhiteSpace(FrontImage))
+                            {
+                                <img src="@FrontImage" alt="Front Attachment" class="card-img" />
+                            }
+                        </div>
+                        <div class="back">
+                            <span class="card-label">Back</span>
+                            <p class="card-text">@BackText</p>
+                            @if (!string.IsNullOrWhiteSpace(BackImage))
+                            {
+                                <img src="@BackImage" alt="Back Attachment" class="card-img" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation-controls">
+                <button class="btn btn-primary nav-btn" @onclick="PreviousCard" disabled="@(!IsPreviousButtonVisible)">
+                    ◀ Prev
+                </button>
+                
+                <button class="btn btn-primary nav-btn" @onclick="NextCard">
+                    @NextButtonText
+                </button>
+            </div>
+        }
+    }
+</div>
+
+<!-- Session Config Popup -->
+<SessionConfigPopup Config="SessionConfig ?? new()" IsVisible="IsConfigPopupVisible" OnConfirm="ApplyNewConfig" OnCancel="CloseConfigPopup" ConfirmButtonText="Apply Settings" />
+
+@code {
+    private SessionConfig? SessionConfig { get; set; }
+    private List<Flashcard> Cards { get; set; } = [];
+    private int CurrentIndex { get; set; }
+    private bool IsFlipped { get; set; }
+
+    private bool IsConfigPopupVisible { get; set; }
+
+    private System.Threading.Timer? _autoplayTimer;
+
+    private string CardCountDisplay => Cards.Any() ? $"{CurrentIndex + 1} / {Cards.Count}" : "0 / 0";
+    private bool IsPreviousButtonVisible => CurrentIndex > 0;
+    private string NextButtonText => CurrentIndex < Cards.Count - 1 ? "Next ▶" : "Finish Check ✔";
+
+    private Flashcard? CurrentCard => Cards.ElementAtOrDefault(CurrentIndex);
+
+    private string FrontText => SessionConfig != null && CurrentCard != null
+        ? (SessionConfig.DisplayTermFirst ? CurrentCard.Question : CurrentCard.Answer)
+        : string.Empty;
+
+    private string BackText => SessionConfig != null && CurrentCard != null
+        ? (SessionConfig.DisplayTermFirst ? CurrentCard.Answer : CurrentCard.Question)
+        : string.Empty;
+
+    private string? FrontImage => SessionConfig != null && CurrentCard != null
+        ? (SessionConfig.DisplayTermFirst ? CurrentCard.QuestionImage : CurrentCard.AnswerImage)
+        : null;
+
+    private string? BackImage => SessionConfig != null && CurrentCard != null
+        ? (SessionConfig.DisplayTermFirst ? CurrentCard.AnswerImage : CurrentCard.QuestionImage)
+        : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SessionConfig = SessionState.CurrentConfig;
+        if (SessionConfig == null)
+        {
+            Navigation.NavigateTo("/sets");
+            return;
+        }
+
+        await LoadSessionCards();
+    }
+
+    private async Task LoadSessionCards()
+    {
+        if (SessionConfig == null) return;
+
+        var allCards = new List<Flashcard>();
+        foreach (var setId in SessionConfig.SetIds)
+        {
+            var loaded = await Repository.GetFlashcardsForSetAsync(setId);
+            allCards.AddRange(loaded);
+        }
+
+        if (SessionConfig.IsShuffleEnabled)
+        {
+            var random = new Random();
+            allCards = allCards.OrderBy(_ => random.Next()).ToList();
+        }
+
+        Cards = allCards;
+        CurrentIndex = 0;
+        IsFlipped = false;
+
+        StartAutoplayTimerIfNeeded();
+        SpeakCurrentCardIfNeeded();
+    }
+
+    private void FlipCard()
+    {
+        IsFlipped = !IsFlipped;
+        if (IsFlipped)
+        {
+            SpeakText(BackText);
+        }
+        else
+        {
+            SpeakText(FrontText);
+        }
+    }
+
+    private void NextCard()
+    {
+        if (CurrentIndex < Cards.Count - 1)
+        {
+            CurrentIndex++;
+            IsFlipped = false;
+            SpeakCurrentCardIfNeeded();
+        }
+        else
+        {
+            EndSession();
+        }
+    }
+
+    private void PreviousCard()
+    {
+        if (CurrentIndex > 0)
+        {
+            CurrentIndex--;
+            IsFlipped = false;
+            SpeakCurrentCardIfNeeded();
+        }
+    }
+
+    private void EndSession()
+    {
+        StopAutoplayTimer();
+        Navigation.NavigateTo("/sets");
+    }
+
+    private void OpenConfigPopup()
+    {
+        StopAutoplayTimer();
+        IsConfigPopupVisible = true;
+    }
+
+    private void CloseConfigPopup()
+    {
+        IsConfigPopupVisible = false;
+        StartAutoplayTimerIfNeeded();
+    }
+
+    private async Task ApplyNewConfig()
+    {
+        IsConfigPopupVisible = false;
+        await LoadSessionCards();
+    }
+
+    private void StartAutoplayTimerIfNeeded()
+    {
+        StopAutoplayTimer();
+
+        if (SessionConfig != null && SessionConfig.IsAutoplayEnabled)
+        {
+            _autoplayTimer = new System.Threading.Timer(AutoplayTick, null, 4000, 4000);
+        }
+    }
+
+    private void StopAutoplayTimer()
+    {
+        _autoplayTimer?.Dispose();
+        _autoplayTimer = null;
+    }
+
+    private void AutoplayTick(object? state)
+    {
+        InvokeAsync(() =>
+        {
+            if (!IsFlipped)
+            {
+                FlipCard();
+            }
+            else
+            {
+                NextCard();
+            }
+            StateHasChanged();
+        });
+    }
+
+    private void SpeakCurrentCardIfNeeded()
+    {
+        if (SessionConfig != null && SessionConfig.IsReadAloudEnabled)
+        {
+            SpeakText(FrontText);
+        }
+    }
+
+    private void SpeakText(string text)
+    {
+        if (SessionConfig == null || !SessionConfig.IsReadAloudEnabled || string.IsNullOrWhiteSpace(text)) return;
+        
+        var escaped = text.Replace("'", "\\'").Replace("\n", " ").Replace("\r", " ");
+        _ = JSRuntime.InvokeVoidAsync("eval", $"if ('speechSynthesis' in window) {{ speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance('{escaped}'); speechSynthesis.speak(u); }}");
+    }
+
+    public void Dispose()
+    {
+        StopAutoplayTimer();
+    }
+}

@@ -1,0 +1,66 @@
+@using FlashcardViewer.Domain
+
+@if (IsVisible)
+{
+    <div class="modal-overlay">
+        <div class="modal-content glass-panel animated fade-in">
+            <div class="modal-header">
+                <h2>Configure Session</h2>
+                <button class="btn-close" @onclick="Cancel" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="config-row">
+                    <label for="autoplay">Autoplay</label>
+                    <label class="switch">
+                        <input type="checkbox" id="autoplay" @bind="Config.IsAutoplayEnabled" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="config-row">
+                    <label for="readAloud">Read Aloud</label>
+                    <label class="switch">
+                        <input type="checkbox" id="readAloud" @bind="Config.IsReadAloudEnabled" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="config-row">
+                    <label for="shuffle">Shuffle</label>
+                    <label class="switch">
+                        <input type="checkbox" id="shuffle" @bind="Config.IsShuffleEnabled" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="config-row">
+                    <label for="termFirst">Display Term First</label>
+                    <label class="switch">
+                        <input type="checkbox" id="termFirst" @bind="Config.DisplayTermFirst" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-block" id="btn-start-session" @onclick="Confirm">@ConfirmButtonText</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public SessionConfig Config { get; set; } = new();
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public string ConfirmButtonText { get; set; } = "Start Session";
+
+    [Parameter]
+    public EventCallback OnConfirm { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    private async Task Confirm() => await OnConfirm.InvokeAsync();
+    private async Task Cancel() => await OnCancel.InvokeAsync();
+}

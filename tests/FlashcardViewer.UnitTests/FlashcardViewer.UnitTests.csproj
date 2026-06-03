@@ -5,6 +5,7 @@
     <ProjectReference Include="..\..\src\FlashcardViewer.Application\FlashcardViewer.Application.csproj" />
     <ProjectReference Include="..\..\src\FlashcardViewer.Infrastructure.Sqlite\FlashcardViewer.Infrastructure.Sqlite.csproj" />
     <ProjectReference Include="..\..\src\FlashcardViewer.Infrastructure.Web\FlashcardViewer.Infrastructure.Web.csproj" />
+    <ProjectReference Include="..\..\src\FlashcardViewer.SharedUI\FlashcardViewer.SharedUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

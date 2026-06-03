@@ -1,0 +1,24 @@
+@inherits LayoutComponentBase
+
+<div class="app-container" data-theme="@(IsDarkMode ? "dark" : "light")">
+    <header class="app-header glass-panel">
+        <div class="logo">⚡ Flashcard Viewer</div>
+        <button class="btn btn-theme btn-secondary" @onclick="ToggleTheme">
+            @(IsDarkMode ? "☀️ Light" : "🌙 Dark")
+        </button>
+    </header>
+
+    <main class="app-main">
+        @Body
+    </main>
+</div>
+
+@code {
+    private bool IsDarkMode { get; set; } = false;
+
+    private void ToggleTheme()
+    {
+        IsDarkMode = !IsDarkMode;
+    }
+}
+

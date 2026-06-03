@@ -1,0 +1,197 @@
+@page "/sets/{setId:int}"
+@inject IFlashcardRepository Repository
+@inject NavigationManager Navigation
+@inject Services.SessionStateService SessionState
+
+<div class="cards-page-container">
+    <div class="page-header glass-panel">
+        <button class="btn btn-secondary" @onclick="GoBack">⬅ Back</button>
+        <h1>@(FlashcardSet?.Title ?? "Flashcards")</h1>
+        <button class="btn btn-success" @onclick="OpenConfigPopup" disabled="@(!HasCards)">▶ Start Session</button>
+    </div>
+
+    @if (IsLoading)
+    {
+        <div class="loader">Loading cards...</div>
+    }
+    else
+    {
+        <div class="cards-list">
+            @for (int i = 0; i < Cards.Count; i++)
+            {
+                var card = Cards[i];
+                var index = i;
+                var isPlaceholder = (index == Cards.Count - 1);
+
+                <div class="card-edit-row glass-panel @(isPlaceholder ? "placeholder-row" : "")">
+                    <div class="row-number">@(isPlaceholder ? "+" : (index + 1).ToString())</div>
+                    
+                    <div class="fields-container">
+                        <div class="field-group">
+                            <input type="text" 
+                                   placeholder="Enter question..." 
+                                   value="@card.Question" 
+                                   @onchange="(e) => OnCardFieldChanged(card, isPlaceholder, true, e.Value?.ToString())" 
+                                   class="input-field card-input" />
+                        </div>
+                        
+                        <div class="field-group">
+                            <input type="text" 
+                                   placeholder="Enter answer..." 
+                                   value="@card.Answer" 
+                                   @onchange="(e) => OnCardFieldChanged(card, isPlaceholder, false, e.Value?.ToString())" 
+                                   class="input-field card-input" />
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(card.QuestionImage) || !string.IsNullOrWhiteSpace(card.AnswerImage))
+                        {
+                            <div class="images-preview">
+                                @if (!string.IsNullOrWhiteSpace(card.QuestionImage))
+                                {
+                                    <div class="image-box">
+                                        <span class="image-label">Q Image:</span>
+                                        <img src="@card.QuestionImage" alt="Question" />
+                                    </div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(card.AnswerImage))
+                                {
+                                    <div class="image-box">
+                                        <span class="image-label">A Image:</span>
+                                        <img src="@card.AnswerImage" alt="Answer" />
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    @if (!isPlaceholder)
+                    {
+                        <div class="row-actions">
+                            <button class="btn-icon btn-delete-card" @onclick="() => DeleteCard(card)" title="Delete Card">🗑️</button>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Session Config Popup -->
+<SessionConfigPopup Config="ActiveConfig" IsVisible="IsConfigPopupVisible" OnConfirm="StartSession" OnCancel="CloseConfigPopup" />
+
+@code {
+    [Parameter]
+    public int SetId { get; set; }
+
+    private FlashcardSet? FlashcardSet { get; set; }
+    private List<Flashcard> Cards { get; set; } = [];
+    private bool IsLoading { get; set; } = true;
+    private bool HasCards => Cards.Count > 1; // At least one actual card + placeholder
+
+    private bool IsConfigPopupVisible { get; set; }
+    private SessionConfig ActiveConfig { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadSetAndCards();
+    }
+
+    private async Task LoadSetAndCards()
+    {
+        IsLoading = true;
+        try
+        {
+            FlashcardSet = await Repository.GetFlashcardSetAsync(SetId);
+            var loaded = await Repository.GetFlashcardsForSetAsync(SetId);
+            Cards = loaded.ToList();
+            AddPlaceholderCard();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void AddPlaceholderCard()
+    {
+        Cards.Add(new Flashcard 
+        { 
+            SetId = SetId, 
+            Question = string.Empty, 
+            Answer = string.Empty 
+        });
+    }
+
+    private async Task OnCardFieldChanged(Flashcard card, bool isPlaceholder, bool isQuestionField, string? newValue)
+    {
+        var cleanedValue = newValue?.Trim() ?? string.Empty;
+
+        if (isQuestionField)
+        {
+            card.Question = cleanedValue;
+        }
+        else
+        {
+            card.Answer = cleanedValue;
+        }
+
+        if (!string.IsNullOrWhiteSpace(card.Question) && !string.IsNullOrWhiteSpace(card.Answer))
+        {
+            if (isPlaceholder)
+            {
+                // Create in database
+                await Repository.AddFlashcardAsync(card);
+                
+                // Add a new placeholder card at the end
+                AddPlaceholderCard();
+            }
+            else
+            {
+                // Update in database
+                await Repository.UpdateFlashcardAsync(card);
+            }
+        }
+        else if (!isPlaceholder)
+        {
+            // If user cleared out an existing card, we update it in the database
+            await Repository.UpdateFlashcardAsync(card);
+        }
+    }
+
+    private async Task DeleteCard(Flashcard card)
+    {
+        await Repository.DeleteFlashcardAsync(card.Id);
+        Cards.Remove(card);
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/sets");
+    }
+
+    private void OpenConfigPopup()
+    {
+        if (FlashcardSet != null)
+        {
+            ActiveConfig = new SessionConfig
+            {
+                Title = FlashcardSet.Title,
+                SetIds = [SetId],
+                DisplayTermFirst = true
+            };
+            IsConfigPopupVisible = true;
+        }
+    }
+
+    private void CloseConfigPopup()
+    {
+        IsConfigPopupVisible = false;
+    }
+
+    private void StartSession()
+    {
+        IsConfigPopupVisible = false;
+        SessionState.CurrentConfig = ActiveConfig;
+        Navigation.NavigateTo("/session");
+    }
+}

@@ -1,0 +1,278 @@
+@page "/"
+@page "/sets"
+@inject IFlashcardRepository Repository
+@inject NavigationManager Navigation
+@inject Services.SessionStateService SessionState
+
+<div class="sets-page-container">
+    <div class="page-header">
+        <h1>Flashcard Sets</h1>
+        <p class="storage-info">@StorageModeText</p>
+    </div>
+
+    <div class="action-bar glass-panel">
+        <div class="search-add">
+            <input type="text" placeholder="New set title..." @bind="NewSetTitle" @bind:event="oninput" @onkeyup="HandleKeyUp" class="input-field" />
+            <button class="btn btn-primary" @onclick="AddSet" disabled="@string.IsNullOrWhiteSpace(NewSetTitle)">➕ Add Set</button>
+        </div>
+
+        <div class="selection-actions">
+            @if (SelectableSets.Any())
+            {
+                <label class="select-all-label">
+                    <input type="checkbox" checked="@AllSelected" @onchange="ToggleSelectAll" />
+                    Select All
+                </label>
+            }
+
+            @if (IsAnySelected)
+            {
+                <button class="btn btn-danger" @onclick="ConfirmDeleteSelected">🗑️ Delete (@SelectedCount)</button>
+                <button class="btn btn-success" @onclick="OpenConfigPopup">▶ Start Session</button>
+            }
+        </div>
+    </div>
+
+    @if (IsLoading)
+    {
+        <div class="loader">Loading sets...</div>
+    }
+    else if (!SelectableSets.Any())
+    {
+        <div class="empty-state glass-panel">
+            <p>No flashcard sets found. Type a title above to create your first set!</p>
+        </div>
+    }
+    else
+    {
+        <div class="sets-grid">
+            @foreach (var selectable in SelectableSets)
+            {
+                <div class="set-card glass-panel @(selectable.IsSelected ? "selected" : "")" @onclick="() => NavigateToSet(selectable.Set.Id)">
+                    <div class="card-checkbox" @onclick:stopPropagation>
+                        <input type="checkbox" @bind="selectable.IsSelected" />
+                    </div>
+                    <div class="card-content">
+                        <h3>@selectable.Set.Title</h3>
+                        <p>@(string.IsNullOrWhiteSpace(selectable.Set.Description) ? "No description provided." : selectable.Set.Description)</p>
+                    </div>
+                    <div class="card-actions" @onclick:stopPropagation>
+                        <button class="btn-icon" @onclick="() => EditSetDetails(selectable.Set)" title="Edit Title/Description">✏️</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Session Config Popup -->
+<SessionConfigPopup Config="ActiveConfig" IsVisible="IsConfigPopupVisible" OnConfirm="StartSession" OnCancel="CloseConfigPopup" />
+
+<!-- Edit Set Modal -->
+@if (EditingSet != null)
+{
+    <div class="modal-overlay">
+        <div class="modal-content glass-panel animated fade-in">
+            <div class="modal-header">
+                <h2>Edit Set Details</h2>
+                <button class="btn-close" @onclick="CancelEditSet" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editTitle">Title</label>
+                    <input type="text" id="editTitle" @bind="EditingSetTitle" class="input-field" />
+                </div>
+                <div class="form-group">
+                    <label for="editDesc">Description</label>
+                    <textarea id="editDesc" @bind="EditingSetDescription" class="input-field" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="CancelEditSet">Cancel</button>
+                <button class="btn btn-primary" @onclick="SaveSetDetails">Save Changes</button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if (IsDeleteConfirmVisible)
+{
+    <div class="modal-overlay">
+        <div class="modal-content glass-panel animated fade-in">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button class="btn-close" @onclick="CancelDelete" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the following flashcard set(s)? All cards within them will be lost forever.</p>
+                <ul>
+                    @foreach (var s in SelectableSets.Where(x => x.IsSelected))
+                    {
+                        <li><strong>@s.Set.Title</strong></li>
+                    }
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                <button class="btn btn-danger" @onclick="DeleteSelected">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<SelectableSet> SelectableSets { get; set; } = [];
+    private string NewSetTitle { get; set; } = string.Empty;
+    private bool IsLoading { get; set; } = true;
+    private string StorageModeText { get; set; } = "Data stored offline";
+
+    private bool IsConfigPopupVisible { get; set; }
+    private SessionConfig ActiveConfig { get; set; } = new();
+
+    private FlashcardSet? EditingSet { get; set; }
+    private string EditingSetTitle { get; set; } = string.Empty;
+    private string EditingSetDescription { get; set; } = string.Empty;
+
+    private bool IsDeleteConfirmVisible { get; set; }
+
+    private bool IsAnySelected => SelectableSets.Any(s => s.IsSelected);
+    private int SelectedCount => SelectableSets.Count(s => s.IsSelected);
+    private bool AllSelected => SelectableSets.Any() && SelectableSets.All(s => s.IsSelected);
+
+    protected override async Task OnInitializedAsync()
+    {
+        StorageModeText = Repository.GetType().Name.Contains("Web") 
+            ? "Data stored offline (Browser storage)" 
+            : "Data stored offline (SQLite Database)";
+        await LoadSets();
+    }
+
+    private async Task LoadSets()
+    {
+        IsLoading = true;
+        try
+        {
+            var sets = await Repository.GetFlashcardSetsAsync();
+            SelectableSets = sets.Select(s => new SelectableSet { Set = s }).ToList();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task AddSet()
+    {
+        if (!string.IsNullOrWhiteSpace(NewSetTitle))
+        {
+            var newSet = new FlashcardSet { Title = NewSetTitle.Trim(), Description = "" };
+            await Repository.AddFlashcardSetAsync(newSet);
+            SelectableSets.Add(new SelectableSet { Set = newSet });
+            NewSetTitle = string.Empty;
+        }
+    }
+
+    private void HandleKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            _ = AddSet();
+        }
+    }
+
+    private void ToggleSelectAll(ChangeEventArgs e)
+    {
+        bool isChecked = (bool)(e.Value ?? false);
+        foreach (var s in SelectableSets)
+        {
+            s.IsSelected = isChecked;
+        }
+    }
+
+    private void NavigateToSet(int setId)
+    {
+        Navigation.NavigateTo($"/sets/{setId}");
+    }
+
+    private void EditSetDetails(FlashcardSet set)
+    {
+        EditingSet = set;
+        EditingSetTitle = set.Title;
+        EditingSetDescription = set.Description ?? string.Empty;
+    }
+
+    private void CancelEditSet()
+    {
+        EditingSet = null;
+    }
+
+    private async Task SaveSetDetails()
+    {
+        if (EditingSet != null && !string.IsNullOrWhiteSpace(EditingSetTitle))
+        {
+            EditingSet.Title = EditingSetTitle.Trim();
+            EditingSet.Description = EditingSetDescription.Trim();
+            await Repository.UpdateFlashcardSetAsync(EditingSet);
+            EditingSet = null;
+            await LoadSets();
+        }
+    }
+
+    private void ConfirmDeleteSelected()
+    {
+        IsDeleteConfirmVisible = true;
+    }
+
+    private void CancelDelete()
+    {
+        IsDeleteConfirmVisible = false;
+    }
+
+    private async Task DeleteSelected()
+    {
+        IsDeleteConfirmVisible = false;
+        var selected = SelectableSets.Where(s => s.IsSelected).ToList();
+        foreach (var s in selected)
+        {
+            await Repository.DeleteFlashcardSetAsync(s.Set.Id);
+            SelectableSets.Remove(s);
+        }
+    }
+
+    private void OpenConfigPopup()
+    {
+        var selectedSetIds = SelectableSets.Where(s => s.IsSelected).Select(s => s.Set.Id).ToList();
+        var selectedTitles = SelectableSets.Where(s => s.IsSelected).Select(s => s.Set.Title).ToList();
+
+        string title = selectedSetIds.Count > 1 
+            ? "Multiple Sets" 
+            : (selectedTitles.FirstOrDefault() ?? "Session");
+
+        ActiveConfig = new SessionConfig
+        {
+            Title = title,
+            SetIds = selectedSetIds,
+            DisplayTermFirst = true
+        };
+        IsConfigPopupVisible = true;
+    }
+
+    private void CloseConfigPopup()
+    {
+        IsConfigPopupVisible = false;
+    }
+
+    private void StartSession()
+    {
+        IsConfigPopupVisible = false;
+        SessionState.CurrentConfig = ActiveConfig;
+        Navigation.NavigateTo("/session");
+    }
+
+    private class SelectableSet
+    {
+        public FlashcardSet Set { get; set; } = null!;
+        public bool IsSelected { get; set; }
+    }
+}
