@@ -35,26 +35,26 @@ Decouple the application using a Clean Architecture design pattern with dependen
 ```mermaid
 graph TD
     %% UI Layer
-    subgraph UI_Layer [UI Layer]
+    subgraph UI_Layer [UI Layer - src/]
         MAUI[FlashcardViewer.Maui]
         WASM[FlashcardViewer.Wasm]
         RCL[FlashcardViewer.SharedUI]
     end
 
     %% Infrastructure Layer
-    subgraph Infrastructure_Layer [Infrastructure Layer]
+    subgraph Infrastructure_Layer [Infrastructure Layer - src/]
         INFRA_DB[FlashcardViewer.Infrastructure.Sqlite]
         INFRA_WEB[FlashcardViewer.Infrastructure.Web]
     end
 
     %% Core Layers
-    subgraph Core_Layers [Core Layers]
+    subgraph Core_Layers [Core Layers - src/]
         APP[FlashcardViewer.Application]
         DOMAIN[FlashcardViewer.Domain]
     end
 
     %% Test Layer
-    subgraph Test_Layer [Verification Layer]
+    subgraph Test_Layer [Verification Layer - tests/]
         ARCH_TESTS[FlashcardViewer.ArchitectureTests]
         UNIT_TESTS[FlashcardViewer.UnitTests]
     end
@@ -81,71 +81,143 @@ graph TD
 * **Shared UI (Razor Class Library)**: Hosts all shared pages (`.razor`) and static assets (CSS, images). Views communicate with the `Application` layer via states or commands.
 * **Platform Hosts**: `FlashcardViewer.Maui` and `FlashcardViewer.Wasm` act as thin execution shells. They register platform-specific infrastructure implementations (SQLite vs Web LocalStorage) in the dependency injection container and host the Shared UI root component.
 
+All core source code projects must be located under the `src/` directory at the project root. All validation and testing projects must be located under the `tests/` directory at the project root.
+
+### Testing Standard: TUnit and Code Coverage
+To guarantee stability and prevent regressions across multiple runtime targets, all projects must target high test coverage:
+* **Test Framework**: Use **TUnit** as the primary testing framework for unit, integration, and architecture tests.
+* **Slice Delivery Requirement**: Every slice task includes the requirement to write corresponding tests concurrently with implementation. Slices are not complete until coverage verification passes.
+
+---
+
 ## 5. Planned Slices
 
-- [ ] **T-200a (P0): Core Domain and Application Boundary Setup**
-  - **Goal:** Spin up core projects, migrate domain models, and define programmatic dependency verification rules.
-  - **DoD:**
-    1. Create `FlashcardViewer.Domain` (`net10.0`) class library.
-    2. Create `FlashcardViewer.Application` (`net10.0`) class library referencing `Domain`.
-    3. Create `FlashcardViewer.ArchitectureTests` (`net10.0`) xUnit test project using `NetArchTest.eNET`.
-    4. Write architecture tests ensuring:
-       - `Domain` has no external dependencies.
-       - `Application` depends only on `Domain`.
-       - Infrastructure layers depend on `Application` but not vice versa.
-    5. Migrate entities (`Flashcard`, `FlashcardSet`, `SessionConfig`) from the current project to `Domain`.
-    6. Implement abstract interface definitions (`IFlashcardRepository`, `IDatabaseInitializer`) in `Application`.
-  - **Artifacts:** `FlashcardViewer.Domain/`, `FlashcardViewer.Application/`, `FlashcardViewer.ArchitectureTests/`, updated `FlashcardViewer.slnx`.
+### Slice 1: Domain and Application Setup
 
-- [ ] **T-200b (P0): Infrastructure and Storage Decoupling**
-  - **Goal:** Move database access code out of the application and set up platform storage layers.
+- [ ] **T-200a1 (P0): Domain Project Setup & Code Migration**
+  - **Goal:** Set up the domain core library and migrate domain models.
   - **DoD:**
-    1. Create `FlashcardViewer.Infrastructure.Sqlite` (`net10.0`) containing the SQLite database schema setup and operations.
-    2. Create `FlashcardViewer.Infrastructure.Web` (`net10.0`) implementing repository interfaces using browser local storage/IndexedDB.
-    3. Create `FlashcardViewer.UnitTests` xUnit project.
-    4. Implement SQLite repository integration tests verifying correct database migrations and CRUD execution paths on Windows.
-  - **Artifacts:** `FlashcardViewer.Infrastructure.Sqlite/`, `FlashcardViewer.Infrastructure.Web/`, `FlashcardViewer.UnitTests/`.
+    1. Create class library `FlashcardViewer.Domain` (`net10.0`) under `src/`.
+    2. Migrate entities (`Flashcard`, `FlashcardSet`, `SessionConfig`) from the current project to `FlashcardViewer.Domain`.
+    3. Write comprehensive TUnit unit tests validating validation limits and state transitions of the domain entities in `tests/FlashcardViewer.UnitTests`.
+  - **Artifacts:** `src/FlashcardViewer.Domain/`, `tests/FlashcardViewer.UnitTests/`.
 
-- [ ] **T-200c (P0): Shared UI Razor Component Porting**
-  - **Goal:** Convert current MAUI XAML pages into responsive, platform-agnostic Razor Web components.
+- [ ] **T-200a2 (P0): Application Project, Interface Boundaries & Architecture Tests**
+  - **Goal:** Define abstract interfaces, use cases, and establish structural dependency checks.
   - **DoD:**
-    1. Create Razor Class Library `FlashcardViewer.SharedUI` (`net10.0`).
-    2. Establish a responsive layout (`MainLayout.razor`) and design tokens (variables, typography, transitions) in `wwwroot/app.css`.
-    3. Convert view pages to Razor Components:
-       - `FlashcardSetListPage` $\rightarrow$ `FlashcardSetList.razor`
-       - `FlashcardListPage` $\rightarrow$ `FlashcardList.razor`
-       - `FlashcardSessionPage` $\rightarrow$ `FlashcardSession.razor`
-       - `SessionConfigManagementPopup` $\rightarrow$ `SessionConfigPopup.razor`
-    4. Implement component state and event handlers linked to `Application` services.
-  - **Artifacts:** `FlashcardViewer.SharedUI/`.
+    1. Create class library `FlashcardViewer.Application` (`net10.0`) in `src/` referencing `Domain`.
+    2. Declare repository interfaces (`IFlashcardRepository`, `IDatabaseInitializer`) in `Application`.
+    3. Create `FlashcardViewer.ArchitectureTests` (`net10.0`) test project under `tests/` using the TUnit framework.
+    4. Write architecture boundary rules (e.g. `Domain` cannot import outside files, infrastructure cannot leak references) and execute successfully.
+  - **Artifacts:** `src/FlashcardViewer.Application/`, `tests/FlashcardViewer.ArchitectureTests/`.
 
-- [ ] **T-200d (P0): Bootstrapping MAUI Hybrid and Blazor WebAssembly Hosts**
-  - **Goal:** Configure host projects to bootstrap the Shared UI with platform-specific configurations.
-  - **DoD:**
-    1. Refactor the original project to act as the thin native host `FlashcardViewer.Maui` (`net10.0`).
-    2. Configure `MainPage.xaml` to host a `<BlazorWebView>` targeting `wwwroot/index.html`.
-    3. Register `Infrastructure.Sqlite` and shared components in `MauiProgram.cs`.
-    4. Create `FlashcardViewer.Wasm` (`net10.0`) Blazor WebAssembly project.
-    5. Register `Infrastructure.Web` and shared components in `Program.cs` of the Wasm host.
-    6. Verify solution builds and restores cleanly for all targets.
-  - **Artifacts:** `FlashcardViewer.Maui/` project refactoring, `FlashcardViewer.Wasm/` project creation, root `FlashcardViewer.slnx`.
+---
 
-- [ ] **T-200e (P1): Continuous Integration and Continuous Deployment Pipelines**
-  - **Goal:** Automate code validation and compilation for multi-platform delivery.
+### Slice 2: Persistence and Data Access
+
+- [ ] **T-200b1 (P0): SQLite Infrastructure & Persistence Tests**
+  - **Goal:** Decouple native filesystem storage into an isolated project.
   - **DoD:**
-    1. Write `.github/workflows/ci.yml` to trigger on pull requests and branch updates (verifies restores, compiles projects, and runs unit/architecture tests).
-    2. Write `.github/workflows/deploy.yml` configured to:
-       - Package the Windows desktop release (MSIX).
-       - Compile the Android APK.
-       - Publish the Blazor WebAssembly app to GitHub Pages.
-  - **Artifacts:** `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`.
+    1. Create class library `FlashcardViewer.Infrastructure.Sqlite` (`net10.0`) under `src/`.
+    2. Move SQLite connection configuration and DB migrations to `Infrastructure.Sqlite`.
+    3. Write integration tests using TUnit with in-memory database engines confirming schema setup, reads, and writes.
+  - **Artifacts:** `src/FlashcardViewer.Infrastructure.Sqlite/`.
+
+- [ ] **T-200b2 (P0): Web Infrastructure & Web Test Coverage**
+  - **Goal:** Implement storage rules compatible with browser sandbox environments.
+  - **DoD:**
+    1. Create class library `FlashcardViewer.Infrastructure.Web` (`net10.0`) under `src/`.
+    2. Implement repository interfaces using browser LocalStorage or IndexedDB fallback.
+    3. Write TUnit unit tests with mocked browser state APIs to verify browser persistence bounds.
+  - **Artifacts:** `src/FlashcardViewer.Infrastructure.Web/`.
+
+---
+
+### Slice 3: Shared Razor Components
+
+- [ ] **T-200c1 (P0): Shared UI Structure, CSS Tokens & Layout Setup**
+  - **Goal:** Set up the shared Razor Class Library base framework and styles.
+  - **DoD:**
+    1. Create Razor Class Library `FlashcardViewer.SharedUI` (`net10.0`) under `src/`.
+    2. Establish a responsive layout shell (`MainLayout.razor`) and styling variables in `wwwroot/app.css` (themes, transitions).
+  - **Artifacts:** `src/FlashcardViewer.SharedUI/`.
+
+- [ ] **T-200c2 (P0): Set List View Porting**
+  - **Goal:** Port the set list view page to a shared Razor Component.
+  - **DoD:**
+    1. Port XAML `FlashcardSetListPage` $\rightarrow$ Razor component `FlashcardSetList.razor`.
+    2. Hook up component bindings to `Application` storage services.
+    3. Write TUnit component render verification tests.
+  - **Artifacts:** Razor views and tests in `src/FlashcardViewer.SharedUI/`.
+
+- [ ] **T-200c3 (P0): Card List View Porting**
+  - **Goal:** Port card details display view.
+  - **DoD:**
+    1. Port XAML `FlashcardListPage` $\rightarrow$ Razor component `FlashcardList.razor`.
+    2. Write TUnit verification tests.
+  - **Artifacts:** Razor views and tests in `src/FlashcardViewer.SharedUI/`.
+
+- [ ] **T-200c4 (P0): Flashcard Session View Porting**
+  - **Goal:** Port the interactive evaluation session page.
+  - **DoD:**
+    1. Port XAML `FlashcardSessionPage` $\rightarrow$ Razor component `FlashcardSession.razor`.
+    2. Write CSS transitions for high-performance visual card flipping.
+    3. Write TUnit verification tests.
+  - **Artifacts:** Razor views and tests in `src/FlashcardViewer.SharedUI/`.
+
+- [ ] **T-200c5 (P0): Session Configuration Popup Porting**
+  - **Goal:** Port the configuration settings dialog overlay.
+  - **DoD:**
+    1. Port XAML `SessionConfigManagementPopup` $\rightarrow$ Razor component `SessionConfigPopup.razor`.
+    2. Write TUnit verification tests.
+  - **Artifacts:** Razor views and tests in `src/FlashcardViewer.SharedUI/`.
+
+---
+
+### Slice 4: Shell Hosts Bootstrapping
+
+- [ ] **T-200d1 (P0): MAUI Host Bootstrapping & Windows Verification**
+  - **Goal:** Set up native wrapper execution on Windows desktop.
+  - **DoD:**
+    1. Relactor current `FlashcardViewer` project to act as native host `FlashcardViewer.Maui` (`net10.0`) under `src/`.
+    2. Mount shared UI in `MainPage.xaml` inside a `<BlazorWebView>`.
+    3. Wire DI for `Infrastructure.Sqlite` in `MauiProgram.cs`.
+    4. Compile and verify app executes successfully on Windows.
+  - **Artifacts:** `src/FlashcardViewer.Maui/`.
+
+- [ ] **T-200d2 (P0): WebAssembly Host Bootstrapping & Browser Verification**
+  - **Goal:** Set up browser web client compilation.
+  - **DoD:**
+    1. Create Blazor WebAssembly project `FlashcardViewer.Wasm` (`net10.0`) under `src/`.
+    2. Wire DI for `Infrastructure.Web` in `Program.cs`.
+    3. Compile and verify the application runs successfully in a local browser.
+  - **Artifacts:** `src/FlashcardViewer.Wasm/`.
+
+---
+
+### Slice 5: Pipelines and Workflows
+
+- [ ] **T-200e1 (P1): Continuous Integration (CI) Workflow**
+  - **Goal:** Setup automatic test and compilation checks.
+  - **DoD:**
+    1. Create `.github/workflows/ci.yml` file.
+    2. Verify builds and executes TUnit validations automatically.
+  - **Artifacts:** `.github/workflows/ci.yml`.
+
+- [ ] **T-200e2 (P1): Deployment (CD) Workflow**
+  - **Goal:** Configure automated releases.
+  - **DoD:**
+    1. Create `.github/workflows/deploy.yml` configuring builds for Windows MSIX, Android APK, and Blazor WebAssembly static build page exports.
+  - **Artifacts:** `.github/workflows/deploy.yml`.
+
+---
 
 ## 6. Verification
 
 1. **Architecture Test**: Passing assembly scan verifying Domain, Application, and Infrastructure boundaries are preserved.
 2. **Persistence Test**: SQLite repositories write/read test data correctly.
-3. **Execution Verification (Desktop)**: Executing `dotnet run -f net10.0-windows10.0.26100.0` in `FlashcardViewer.Maui` starts the application, initializes the DB, and shows the UI.
-4. **Execution Verification (Web)**: Executing `dotnet run` in `FlashcardViewer.Wasm` opens the client app in a local browser port and fully loads/edits card sets.
+3. **Execution Verification (Desktop)**: Executing `dotnet run -f net10.0-windows10.0.26100.0` in `src/FlashcardViewer.Maui` starts the application, initializes the DB, and shows the UI.
+4. **Execution Verification (Web)**: Executing `dotnet run` in `src/FlashcardViewer.Wasm` opens the client app in a local browser port and fully loads/edits card sets.
 
 ## 7. Fallout And Coordination
 
