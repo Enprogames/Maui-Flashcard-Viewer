@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="FlashcardViewer/FlashcardViewer.csproj">
+    <Deploy />
+  </Project>
+</Solution>

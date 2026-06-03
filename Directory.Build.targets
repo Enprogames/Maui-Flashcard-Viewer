@@ -1,0 +1,3 @@
+<Project>
+  <!-- Prevents inheriting parent Directory.Build.targets to avoid TFM and build policy conflicts -->
+</Project>
