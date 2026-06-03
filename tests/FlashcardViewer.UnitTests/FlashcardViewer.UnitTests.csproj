@@ -3,6 +3,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FlashcardViewer.Domain\FlashcardViewer.Domain.csproj" />
     <ProjectReference Include="..\..\src\FlashcardViewer.Application\FlashcardViewer.Application.csproj" />
+    <ProjectReference Include="..\..\src\FlashcardViewer.Infrastructure.Sqlite\FlashcardViewer.Infrastructure.Sqlite.csproj" />
+    <ProjectReference Include="..\..\src\FlashcardViewer.Infrastructure.Web\FlashcardViewer.Infrastructure.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

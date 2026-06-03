@@ -115,7 +115,7 @@ To guarantee stability and prevent regressions across multiple runtime targets, 
 
 ### Slice 2: Persistence and Data Access
 
-- [ ] **T-200b1 (P0): SQLite Infrastructure & Persistence Tests**
+- [x] **T-200b1 (P0): SQLite Infrastructure & Persistence Tests**
   - **Goal:** Decouple native filesystem storage into an isolated project.
   - **DoD:**
     1. Create class library `FlashcardViewer.Infrastructure.Sqlite` (`net10.0`) under `src/`.
@@ -123,7 +123,7 @@ To guarantee stability and prevent regressions across multiple runtime targets, 
     3. Write integration tests using TUnit with in-memory database engines confirming schema setup, reads, and writes.
   - **Artifacts:** `src/FlashcardViewer.Infrastructure.Sqlite/`.
 
-- [ ] **T-200b2 (P0): Web Infrastructure & Web Test Coverage**
+- [x] **T-200b2 (P0): Web Infrastructure & Web Test Coverage**
   - **Goal:** Implement storage rules compatible with browser sandbox environments.
   - **DoD:**
     1. Create class library `FlashcardViewer.Infrastructure.Web` (`net10.0`) under `src/`.
