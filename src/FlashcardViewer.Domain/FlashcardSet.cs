@@ -1,12 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FlashcardViewer.Models
+namespace FlashcardViewer.Domain
 {
     public partial class FlashcardSet : ObservableObject
     {

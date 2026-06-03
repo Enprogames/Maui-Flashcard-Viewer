@@ -5,7 +5,7 @@
              xmlns:views="clr-namespace:FlashcardViewer.Views"
              x:Class="FlashcardViewer.Views.FlashcardSetListPage"
              xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
-             xmlns:models="clr-namespace:FlashcardViewer.Models"
+             xmlns:models="clr-namespace:FlashcardViewer.Domain"
              x:DataType="viewmodels:FlashcardSetListViewModel">
 
     <ContentPage.Resources>

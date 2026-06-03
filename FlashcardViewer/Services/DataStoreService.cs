@@ -1,4 +1,4 @@
-﻿namespace FlashcardViewer.Services
+namespace FlashcardViewer.Services
 {
     public interface IDataStoreService
     {

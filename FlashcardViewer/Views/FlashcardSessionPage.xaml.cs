@@ -1,5 +1,5 @@
 using FlashcardViewer.ViewModels;
-using FlashcardViewer.Models;
+using FlashcardViewer.Domain;
 using CommunityToolkit.Mvvm.Input;
 
 namespace FlashcardViewer.Views;

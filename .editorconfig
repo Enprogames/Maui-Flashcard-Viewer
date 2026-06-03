@@ -1,0 +1,20 @@
+# Top-level EditorConfig for FlashcardViewer formatting rules
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+
+# C# source code files must end with one single newline character
+[*.cs]
+insert_final_newline = true
+
+# Project and solution files (.csproj and .slnx) must end with zero newlines
+[*.csproj]
+insert_final_newline = false
+
+[*.slnx]
+insert_final_newline = false

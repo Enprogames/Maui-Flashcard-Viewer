@@ -4,7 +4,7 @@
              x:Class="FlashcardViewer.Views.FlashcardListPage"
              xmlns:views="clr-namespace:FlashcardViewer.Views"
              xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
-             xmlns:models="clr-namespace:FlashcardViewer.Models"
+             xmlns:models="clr-namespace:FlashcardViewer.Domain"
              x:DataType="viewmodels:FlashcardListViewModel"
              Title="FlashcardListView">
 
@@ -47,3 +47,4 @@
             HorizontalOptions="Center" />
     </Grid>
 </ContentPage>
+

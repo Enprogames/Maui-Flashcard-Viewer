@@ -2,4 +2,8 @@
   <Project Path="FlashcardViewer/FlashcardViewer.csproj">
     <Deploy />
   </Project>
+  <Project Path="src/FlashcardViewer.Domain/FlashcardViewer.Domain.csproj" />
+  <Project Path="src/FlashcardViewer.Application/FlashcardViewer.Application.csproj" />
+  <Project Path="tests/FlashcardViewer.ArchitectureTests/FlashcardViewer.ArchitectureTests.csproj" />
+  <Project Path="tests/FlashcardViewer.UnitTests/FlashcardViewer.UnitTests.csproj" />
 </Solution>

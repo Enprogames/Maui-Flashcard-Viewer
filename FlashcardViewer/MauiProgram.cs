@@ -1,4 +1,4 @@
-﻿// MauiProgram.cs
+// MauiProgram.cs
 
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;

@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FlashcardViewer.Models;
+using FlashcardViewer.Domain;
 using FlashcardViewer.Services;
 using System.Collections.ObjectModel;
 

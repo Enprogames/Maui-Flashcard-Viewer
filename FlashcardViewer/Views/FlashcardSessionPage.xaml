@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FlashcardViewer.Views.FlashcardSessionPage"
              xmlns:viewmodels="clr-namespace:FlashcardViewer.ViewModels"
-             xmlns:models="clr-namespace:FlashcardViewer.Models"
+             xmlns:models="clr-namespace:FlashcardViewer.Domain"
              xmlns:views="clr-namespace:FlashcardViewer.Views"
              x:DataType="viewmodels:FlashcardSessionViewModel"
              Title="Flashcard Session">

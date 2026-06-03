@@ -94,7 +94,7 @@ To guarantee stability and prevent regressions across multiple runtime targets, 
 
 ### Slice 1: Domain and Application Setup
 
-- [ ] **T-200a1 (P0): Domain Project Setup & Code Migration**
+- [x] **T-200a1 (P0): Domain Project Setup & Code Migration**
   - **Goal:** Set up the domain core library and migrate domain models.
   - **DoD:**
     1. Create class library `FlashcardViewer.Domain` (`net10.0`) under `src/`.
@@ -102,7 +102,7 @@ To guarantee stability and prevent regressions across multiple runtime targets, 
     3. Write comprehensive TUnit unit tests validating validation limits and state transitions of the domain entities in `tests/FlashcardViewer.UnitTests`.
   - **Artifacts:** `src/FlashcardViewer.Domain/`, `tests/FlashcardViewer.UnitTests/`.
 
-- [ ] **T-200a2 (P0): Application Project, Interface Boundaries & Architecture Tests**
+- [x] **T-200a2 (P0): Application Project, Interface Boundaries & Architecture Tests**
   - **Goal:** Define abstract interfaces, use cases, and establish structural dependency checks.
   - **DoD:**
     1. Create class library `FlashcardViewer.Application` (`net10.0`) in `src/` referencing `Domain`.
@@ -218,12 +218,14 @@ To guarantee stability and prevent regressions across multiple runtime targets, 
 2. **Persistence Test**: SQLite repositories write/read test data correctly.
 3. **Execution Verification (Desktop)**: Executing `dotnet run -f net10.0-windows10.0.26100.0` in `src/FlashcardViewer.Maui` starts the application, initializes the DB, and shows the UI.
 4. **Execution Verification (Web)**: Executing `dotnet run` in `src/FlashcardViewer.Wasm` opens the client app in a local browser port and fully loads/edits card sets.
+5. **Formatting Validation**: Running `powershell -File tests/format-check.ps1` returns 0 exits (verifying `.cs` files end with exactly one newline, while `.csproj` and `.slnx` end with zero).
 
 ## 7. Fallout And Coordination
 
 1. Porting ViewModels to Web-compatible state handlers must not alter the core execution rules of flashcard session calculations.
 2. When creating the Shared UI project, CSS components should avoid TailwindCSS and stick to Vanilla CSS matching current styling elements to ensure maximum flexibility and direct transition control.
 3. Central Package Management (CPM) configurations in the parent directory must be verified so they do not conflict with the isolated project files.
+4. All agents must follow the code format constraints mandated by the root `.editorconfig`. Running `powershell -File tests/format-check.ps1 -Fix` automatically resolves formatting discrepancies.
 
 ## 8. Open Questions
 

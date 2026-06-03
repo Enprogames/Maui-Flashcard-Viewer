@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using FlashcardViewer.Domain;
 
-namespace FlashcardViewer.Services
+namespace FlashcardViewer.Application.Interfaces
 {
-    public interface IFlashcardDataStore
+    public interface IFlashcardRepository
     {
-        Task InitializeAsync();
         Task<IEnumerable<FlashcardSet>> GetFlashcardSetsAsync();
         Task<FlashcardSet> GetFlashcardSetAsync(int id);
         Task AddFlashcardSetAsync(FlashcardSet set);
@@ -20,7 +15,5 @@ namespace FlashcardViewer.Services
         Task AddFlashcardAsync(Flashcard flashcard);
         Task UpdateFlashcardAsync(Flashcard flashcard);
         Task DeleteFlashcardAsync(int id);
-        Task<string> SaveImageAsync(Stream imageStream, string fileName);
-        Task DeleteImageAsync(string imagePath);
     }
 }

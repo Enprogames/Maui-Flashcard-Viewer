@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using FlashcardViewer.Views;
-using FlashcardViewer.Models;
+using FlashcardViewer.Domain;
 using FlashcardViewer.Services;
 using CommunityToolkit.Mvvm.Input;
 

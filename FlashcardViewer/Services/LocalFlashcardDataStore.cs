@@ -1,4 +1,4 @@
-﻿using FlashcardViewer.Models;
+using FlashcardViewer.Domain;
 using SQLite;
 
 namespace FlashcardViewer.Services

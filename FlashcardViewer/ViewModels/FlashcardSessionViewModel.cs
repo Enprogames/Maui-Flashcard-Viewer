@@ -1,4 +1,4 @@
-﻿using FlashcardViewer.Services;
+using FlashcardViewer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
 using FlashcardViewer.Views;
-using FlashcardViewer.Models;
+using FlashcardViewer.Domain;
 using CommunityToolkit.Mvvm.Input;
 
 namespace FlashcardViewer.ViewModels
@@ -161,7 +161,7 @@ namespace FlashcardViewer.ViewModels
         private void UpdateNavigationButtonVisibility()
         {
             IsPreviousButtonVisible = CurrentIndex > 0;
-            NextButtonIcon = CurrentIndex < Flashcards.Count - 1 ? "&gt;" : "✓";
+            NextButtonIcon = CurrentIndex < Flashcards.Count - 1 ? "&gt;" : "?";
         }
     }
 }

@@ -100,4 +100,8 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\src\FlashcardViewer.Domain\FlashcardViewer.Domain.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-using FlashcardViewer.Models;
+using FlashcardViewer.Domain;
 using FlashcardViewer.ViewModels;
 
 namespace FlashcardViewer.Views;
